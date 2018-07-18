@@ -1,0 +1,13 @@
+baseURL = "http://jutssam.github.io/"
+languageCode = "zh-cn"
+title = "Bonjour.Yang"
+theme = "angels-ladder"
+comments = true
+disqusShortname = "bonjour-yang"
+
+[Params]
+subtitle = "务必使同志们继续地保持谦虚谨慎、不骄不躁的作风。务必使同志们继续地保持艰苦奋斗的作风。"
+twitter = "https://twitter.com/jutssam"
+github = "https://github.com/jutssam"
+copyright = "Written by JUTSSAM"
+analytics = "UA-121684556-1"

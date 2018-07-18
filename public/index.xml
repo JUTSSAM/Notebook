@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bonjour.Yang</title>
+    <link>http://j.noloss.cn/</link>
+    <description>Recent content on Bonjour.Yang</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 01 Jul 2018 12:32:13 +0800</lastBuildDate>
+    
+	<atom:link href="http://j.noloss.cn/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[译] PHP虚拟机</title>
+      <link>http://j.noloss.cn/post/php_vitual_machine/</link>
+      <pubDate>Sun, 01 Jul 2018 12:32:13 +0800</pubDate>
+      
+      <guid>http://j.noloss.cn/post/php_vitual_machine/</guid>
+      <description>标签： PHP
+本篇文章旨在提供一个对PHP7版本中Zend虚拟机的概述，不会做到面面俱到的详细叙述，但尽力包含大多数重要的部分，以及更精细的细节。
+这篇文章描述的主要背景是PHP版本7.2（当前正在开发版本），但几乎同样适用于PHP7.0/7.1版本中。然而，PHP5.x系列版本的虚拟机之间差别比较显著，笔者不会去比较。
+本文的大部分内容将在指令列表级别进行考虑，最后只有几节讨论VM的实际C语言实现。但是，我确实想提供一些组成VM前端的主要文件：
+ zend_vm_def.h：VM定义文件 zend_vm_execute.h：生成的虚拟机文件 zend_vm_gen.php：生成脚本 zend_execute.c：大多数直接支持文件  操作码 （Opcodes） 首先我们来谈一下操作码，“操作码”是指完整的VM指令(包括操作数)，但也可以只指定“实际”操作代码&amp;ndash;一个决定指令类型的小整数。从上下文来看，指令的意图应该是清晰的。在文件源码中，完整的指令通常被称为Opline。
+一个独立的指令遵循如下zend_op结构体：
+struct _zend_op { const void *handler; znode_op op1; znode_op op2; znode_op result; uint32_t extended_value; uint32_t lineno; zend_uchar opcode; zend_uchar op1_type; zend_uchar op2_type; zend_uchar result_type; };  如上，操作码实质上是“三地址”指令格式。其中‘opcode’决定指令类型，还有两个输入的操作数‘op1’和‘op2’以及一个输出操作数‘result’。
+并不是所有的指令都会用到所有的操作数。ADD指令（代表+操作符）会用到三个操作数。BOOL_NOT指令（代表！操作符）只用到op1和result。ECHO指令只会用到op1操作符。有些指令甚至可以使用或者不使用操作符。例如，DO_FCALL可以使用或者不使用result操作符，具体取决于是否使用函数调用的返回值。有些指令需要两个以上输入操作数，在这种情况下，只需要使用第二个虚拟指令/伪指令（OP_DATA）来携带额外的操作数。
+除了这三个标准操作数之外，还有一个附加的数值extended_value 字段，可以用来保存附加的指令修饰符。例如，对于强制转换（CAST），它可能包含要强制转换的目标类型。
+每个操作数都有对应的一个类型，分别存储在op1_type, op2_type和result_type中。可能的类型有IS_UNUSED, IS_CONST, IS_TMPVAR, IS_VAR and IS_CV。
+后三种类型指定变量操作数(有三种不同类型的VM变量)，IS_CONST表示常量操作数(5或“String”或偶数[1，2，3])，而IS_UNUSED表示实际未使用的操作数，或作为32位数值(汇编术语中的“立即”)使用的操作数。例如，跳转指令将跳转目标存储在未使用的操作数中。
+获取操作指令（Obtaining opcode dumps) 接下来，笔者将经常列出PHP代码生成的操作码序列。目前有三种方法可以将这些操作码转储：
+# Opcache, since PHP 7.1 php -d opcache.opt_debug_level=0x10000 test.php # phpdbg, since PHP 5.</description>
+    </item>
+    
+  </channel>
+</rss>
