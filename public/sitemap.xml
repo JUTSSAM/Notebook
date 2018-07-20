@@ -3,29 +3,29 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://j.noloss.cn/post/php_vitual_machine/</loc>
+    <loc>http://jutssam.github.io/post/php_vitual_machine/</loc>
     <lastmod>2018-07-01T12:32:13+08:00</lastmod>
   </url>
   
   <url>
-    <loc>http://j.noloss.cn/</loc>
-    <lastmod>2018-07-01T12:32:13+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://j.noloss.cn/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://j.noloss.cn/post/</loc>
+    <loc>http://jutssam.github.io/</loc>
     <lastmod>2018-07-01T12:32:13+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://j.noloss.cn/tags/</loc>
+    <loc>http://jutssam.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jutssam.github.io/post/</loc>
+    <lastmod>2018-07-01T12:32:13+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://jutssam.github.io/tags/</loc>
     <priority>0</priority>
   </url>
   
