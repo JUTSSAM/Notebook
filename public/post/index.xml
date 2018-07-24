@@ -2,21 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Bonjour.Yang</title>
-    <link>http://jutssam.github.io/post/</link>
+    <link>http://j.noloss.cn/post/</link>
     <description>Recent content in Posts on Bonjour.Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 01 Jul 2018 12:32:13 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 19 Jul 2018 11:28:05 +0800</lastBuildDate>
     
-	<atom:link href="http://jutssam.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://j.noloss.cn/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>魔术方法和重载</title>
+      <link>http://j.noloss.cn/post/magic_method_and_overload/</link>
+      <pubDate>Thu, 19 Jul 2018 11:28:05 +0800</pubDate>
+      
+      <guid>http://j.noloss.cn/post/magic_method_and_overload/</guid>
+      <description>标签： PHP
+新标签中打开可查看大图
+魔术方法简要叙述 __construct&amp;amp;__destruct 构造函数与析构函数，这两个函数在许多编程语言中均有实现。 PHP中比较特殊的是，需要以双下划线开头，(&amp;gt;=5.6)。并且不能有重名函数存在。
+__get&amp;amp;__set&amp;amp;__isset&amp;amp;__unset 在访问不可访问属性时将会触发此类函数,原本的操作反而不会执行。此类函数可以用来实现类的getter与setter，但是对于PHP这种效率为王的语言，开发者们多半不会考虑此类繁琐的事情。 实现代码如下：
+&amp;lt;?php class Magic{ protected $pro1; protected $pro2; function __get($pro){ echo &amp;quot;__get is running and is getting {$pro}\n&amp;quot;; return $this-&amp;gt;$pro; } function __set($pro,$value) { echo &amp;quot;__set is running and is seting {$pro} as {$value}\n&amp;quot;; $this-&amp;gt;$pro = $value; } function __isset($pro) { return isset($this-&amp;gt;$pro); echo &amp;quot;__isset is running and is checking {$pro}.\n&amp;quot;; } function __unset($pro) { unset($this-&amp;gt;$pro); echo &amp;quot;__unset is running and is checking {$pro}.</description>
+    </item>
+    
+    <item>
+      <title>代码规范</title>
+      <link>http://j.noloss.cn/post/code_standard/</link>
+      <pubDate>Thu, 19 Jul 2018 11:23:04 +0800</pubDate>
+      
+      <guid>http://j.noloss.cn/post/code_standard/</guid>
+      <description>标签：PHP
+看PSR文档寻找规范太繁琐，不如自己写一份示例
+示例代码片段 &amp;lt;?php /* * This file is part of the {project} * * (c) {nickname} &amp;lt;{email}&amp;gt; * * [This source file is subject to the MIT license that is bundled * with this source code in the file LICENSE.] */ namespace Code\Kernel\Standard; use PHP\Standard\Psr as JutssamStandard; /** * {ClassName}[ ：{ Introducetion ...}] * * @author {nickname} &amp;lt;{email}&amp;gt; * * @property \Code\Kernel\Comment $comment * @property \Code\Kernel\TextBody $text_body * @property \Code\Kernel\Artistic $artistic */ Class Application extends ServiceProvider { /** * @var array */ protected $item; /** * @var stirng */ protected $type; /** * @var int */ protected $count; /** * Constructor * * @param array $item * @param int $count * @param string $type * */ public function __construct(array $item, int count, string $type) { parent::__construct(); $this-&amp;gt;item = $item; $this-&amp;gt;count = $count; $this-&amp;gt;type = $type; } /** * Getter * * @return int */ public function getCount() { return $this-&amp;gt;count; } /** * Push new item in.</description>
+    </item>
+    
+    <item>
       <title>[译] PHP虚拟机</title>
-      <link>http://jutssam.github.io/post/php_vitual_machine/</link>
+      <link>http://j.noloss.cn/post/php_vitual_machine/</link>
       <pubDate>Sun, 01 Jul 2018 12:32:13 +0800</pubDate>
       
-      <guid>http://jutssam.github.io/post/php_vitual_machine/</guid>
+      <guid>http://j.noloss.cn/post/php_vitual_machine/</guid>
       <description>标签： PHP
 本篇文章旨在提供一个对PHP7版本中Zend虚拟机的概述，不会做到面面俱到的详细叙述，但尽力包含大多数重要的部分，以及更精细的细节。
 这篇文章描述的主要背景是PHP版本7.2（当前正在开发版本），但几乎同样适用于PHP7.0/7.1版本中。然而，PHP5.x系列版本的虚拟机之间差别比较显著，笔者不会去比较。
