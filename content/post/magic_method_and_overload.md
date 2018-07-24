@@ -8,6 +8,8 @@ draft: false
 
 ---
 ![PHP中魔术方法][1]
+新标签中打开可查看大图
+
 ## 魔术方法简要叙述
 ### \_\_construct&\_\_destruct
 __构造函数__与__析构函数__，这两个函数在许多编程语言中均有实现。
@@ -74,7 +76,9 @@ __unset is running and is checking pro2.
 ```
 
 ### \_\_call&\_\_callstatic
-
+在对象中调用一个不可访问方法时，\_\_call()会被调用。
+静态调用一个不可访问方法时，\_\_callStatic()会被调用。
+这两个函数均有两个参数：string $name -- 函数名，array $args -- 调用参数数组。
 ```
 <?php
 	class Magic{
@@ -92,11 +96,11 @@ __unset is running and is checking pro2.
 		}
 
 		function __call($foo1,$arg){
-			echo "program is calling {$foo1} using ".json_encode($arg)."\n";	
+			echo "program is calling {$foo1} with ".json_encode($arg)."\n";	
 		}
 
 		public static function __callStatic($foo1,$arg){
-			echo 'program is staticly calling  {$foo1} using '.json_encode($arg)."\n";
+			echo 'program is staticly calling  {$foo1} with '.json_encode($arg)."\n";
 		}
 	}
 
@@ -107,10 +111,60 @@ __unset is running and is checking pro2.
 ```
 输出：
 ```
-program is calling fun1 using [1,1]
+program is calling fun1 with [1,1]
 func2 is running.
-program is staticly calling  {$foo1} using [3,3]
+program is staticly calling  {$foo1} with [3,3]
 ```
+在许多面向对象的语言当中，均有重载的概念，重载(overload)即函数/方法有相同的名称，但是参数列表不同，这些函数互相称为重载函数/方法，在调用时根据参数不同来区别不同的函数。
+
+例如在Java中，类中可以创建多个方法，它们具有相同的名字，但具有不同的参数和定义。
+
+在官方文档中给出的用法是上述两个函数可以用作函数的重载，但是用于重载反而没有充分利用到该函数的特性。
+
+在开源项目[EasyWecaht](https://github.com/overtrue/wechat)中有这样一段代码：
+```
+class Factory
+{
+    /**
+     * @param string $name
+     * @param array  $config
+     *
+     * @return \EasyWeChat\Kernel\ServiceContainer
+     */
+    public static function make($name, array $config)
+    {
+        $namespace = Kernel\Support\Str::studly($name);
+        $application = "\\EasyWeChat\\{$namespace}\\Application";
+        return new $application($config);
+    }
+    /**
+     * Dynamically pass methods to the application.
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        return self::make($name, ...$arguments);
+    }
+}
+```
+其使用方法是$app = Factory::$objName，利用这个函数可以做一个框架入口，具有很好的封装效果。
+
+### 其余函数
+剩下的函数不是本文叙述的重点，故放入表格简单概括。
+
+| function      | trigger  | feature  |
+| :--------:    | :-----:  | :----:  |
+| __clone()     | $obj2 = clone $obj1; |   浅复制    |
+| __invoke()    |   以使用函数的方法使用对象   |   -   |
+| __toString()  |   在如echo printf等输出类函数中或者其他需要字符串的情况下，对象作为参数时，会调用对象内的本函数   |  -  |
+| __wakeup()    | unserialize()| 工作前的准备 |
+| __sleep()     | serialize()  | 同上 |
+| __set_state() | ver_export() | debug |
+| __debugInfo() | var_dump()   | debug |
 
 ## 魔术方法底层实现原理
 
