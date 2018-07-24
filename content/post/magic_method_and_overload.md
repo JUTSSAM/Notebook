@@ -7,13 +7,13 @@ draft: false
 标签： PHP
 
 ---
-![PHP中魔术方法][1]
+![PHP中魔术方法](https://upload-images.jianshu.io/upload_images/1594723-5813e1eb121f6be6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2400)
 新标签中打开可查看大图
 
 ## 魔术方法简要叙述
 ### \_\_construct&\_\_destruct
 __构造函数__与__析构函数__，这两个函数在许多编程语言中均有实现。
-PHP中比较特殊的是，需要以双下划线开头，(>=5.6)。并且不能有重名函数存在。
+PHP中比较特殊的是，需要以双下划线开头，(>=5.4)。与类名同名的函数不再作为构造函数。要执行父类的构造函数，需要在子类构造函数中调用：parent::\_\_construct()
 ### \_\_get&\_\_set&\_\_isset&\_\_unset
 在访问不可访问属性时将会触发此类函数,原本的操作反而不会执行。此类函数可以用来实现类的getter与setter，但是对于PHP这种效率为王的语言，开发者们多半不会考虑此类繁琐的事情。
 实现代码如下：
@@ -153,6 +153,8 @@ class Factory
 ```
 其使用方法是$app = Factory::$objName，利用这个函数可以做一个框架入口，具有很好的封装效果。
 
+### \_\_autoload()
+
 ### 其余函数
 剩下的函数不是本文叙述的重点，故放入表格简单概括。
 
@@ -169,5 +171,13 @@ class Factory
 ## 魔术方法底层实现原理
 
 
+### REFERENCE:
+[PHP manual -- Magic Methods](http://php.net/manual/en/language.oop5.magic.php)
 
-  [1]: https://upload-images.jianshu.io/upload_images/1594723-5813e1eb121f6be6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2400
+[Cultt -- What are PHP Magic Methods](https://www.culttt.com/2014/04/16/php-magic-methods/)
+
+[第五节 魔术方法，延迟绑定及静态成员](http://www.php-internals.com/book/?p=chapt05/05-05-class-magic-methods-latebinding)
+
+
+
+ 
