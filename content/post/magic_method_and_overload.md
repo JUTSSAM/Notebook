@@ -7,7 +7,7 @@ draft: false
 标签： PHP
 
 ---
-![PHP中魔术方法](https://upload-images.jianshu.io/upload_images/1594723-5813e1eb121f6be6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2400)
+![Magic Methods.png](https://upload-images.jianshu.io/upload_images/1594723-9a11768b47ae8c2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2100)
 新标签中打开可查看大图
 
 ## 魔术方法简要叙述
@@ -152,6 +152,7 @@ class Factory
 }
 ```
 其使用方法是$app = Factory::$objName，利用这个函数可以做一个框架入口，具有很好的封装效果。
+![Factory.png](https://upload-images.jianshu.io/upload_images/1594723-dc2fe601bf8c6c79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2100)
 
 ### \_\_autoload()
 
