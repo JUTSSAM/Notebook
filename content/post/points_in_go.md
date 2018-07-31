@@ -35,5 +35,15 @@ go语言中，源代码存储格式是UTF8，因此字符串字面量(string lit
 
 [dive-into-go-1](http://colobu.com/2016/06/15/dive-into-go-1/)
 
+## 数组与切片
+数组：有限的同一元素类型的对象的序列。定长。
+Slice：描述数组的一个连续的片段。_[)_
+type SliceHeader struct{
+	Data uintptr
+	Len  int
+	Cap  int
+}
+数组可能在数组和多个slice中公用，会导致修改异步问题。
+
 ## 鸭子类型
 _duck typing_
