@@ -217,7 +217,9 @@ func (s *server) handleTemplate(files string...) http.HandleFunc{
 server类型是可测试的
 
 ```
-func TestHandleAbout(t *testing.T){
+func TestHandleAbout(t *testing.T)
+{
+
 	is := is.New(t)
 	srv := server{
 		db:    mockDatabase,
@@ -230,6 +232,7 @@ func TestHandleAbout(t *testing.T){
 	w := httptest.NewRecorder()
 	srv.ServeHTTP(w, r)
 	is.Equal(w.StatusCode, http.StatusOK)
+
 }
 ```
 
