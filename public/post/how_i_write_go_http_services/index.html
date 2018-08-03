@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    [译]我是如何用go写HTTP服务的 | Bonjour.Yang
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jutssam.github.io/post/how_i_write_go_http_services/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="http://jutssam.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Bonjour.Yang" />
+  <link href="http://jutssam.github.io/index.xml" rel="feed" type="application/rss+xml" title="Bonjour.Yang" />
+
+  
+  
+
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://jutssam.github.io/">Bonjour.Yang</a></h1>
+        <h2>务必使同志们继续地保持谦虚谨慎、不骄不躁的作风。务必使同志们继续地保持艰苦奋斗的作风。</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          
+          
+          <li><a href="https://gitee.com/jutssam" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>[译]我是如何用go写HTTP服务的</h1>
+      <div class="meta">
+        Aug 3, 2018 &nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<p>自从go pre1.0版本，我就在使用go来构建HTTP API/Service。在我的Machin
+eBox项目中，需要构建大量的API来使之易用。</p>
+
+<p>这些年来，我构建服务的方式一直在变化，我想和大家分享一下现在所用的模式，希望能够帮到大家。</p>
+
+<h2 id="服务类型结构体">服务类型结构体</h2>
+
+<p>所有的组件都有一个单独的<code>server</code>结构如下：</p>
+
+<pre><code>type server struct{
+	db      *someDatabase
+	router  *someRouter
+	email 	 EmailSender
+}
+</code></pre>
+
+<p>结构体中部分字段是他们共享的依赖(或者说是配置)。</p>
+
+<h2 id="routes-go">routes.go</h2>
+
+<p>在每个组件中都有一个文件routes.go包含所有的路由：</p>
+
+<pre><code>package app
+
+func (s *server) routes(){
+	s.router.HandleFunc(&quot;/api/&quot;,s.handleAPI())
+	s.router.HandleFunc(&quot;/about&quot;,s.handleAbout())
+	s.router.HandleFunc(&quot;/&quot;,s.handleIndex())
+}
+</code></pre>
+
+<p>方便代码维护，在此文件中可以很快找到代码所在位置。</p>
+
+<h2 id="handlers接受服务">Handlers接受服务</h2>
+
+<pre><code>func (s *server) handleSomething() http.HandleFunc {...}
+</code></pre>
+
+<p>Handler可以通过s变量获取相关依赖(配置)。</p>
+
+<h2 id="返回handler">返回Handler</h2>
+
+<p>handler不处理请求，而是返回一个处理请求的函数。</p>
+
+<p>函数在闭包中运行。</p>
+
+<pre><code>func (s *server) handleSomething() http.HandlerFunc {
+	thing := prepareThing()
+	return func(w http.ResponseWrier,r *http.Request){
+		// use thing
+	}
+}
+</code></pre>
+
+<p>prepareThing只被调用一次，所以可用用来做初始化，然后将thing用于handler。</p>
+
+<p>如果要修改共用文件，记得需要互斥量或者其他机制来保护。</p>
+
+<h2 id="获取handler特定的配置">获取handler特定的配置</h2>
+
+<p>handler需要特殊的配置时，可以将其作为一个参数。</p>
+
+<pre><code>func (s *server) handleGreeting(format string) http.HandleFunc(){
+	return func(w http.ResponseWriter, r *http.Request){
+		fmt.Fprintf(w,format,&quot;world&quot;)
+	}
+}
+</code></pre>
+
+<h2 id="handlerfunc-而不是-handler">HandlerFunc 而不是 Handler</h2>
+
+<p>我更喜欢使用http.HandlerFunc 而不是 http.Handler</p>
+
+<pre><code>func (s *server) handleSomething() http.HandlerFunc {
+	return func(w http.ResponseWrier,r *http.Request){
+
+	}
+}
+</code></pre>
+
+<p>他们或多或少是可以互换的，所以选择一个更适合阅读的，我选择前者。</p>
+
+<h2 id="中间件只是go函数">中间件只是go函数</h2>
+
+<p>中间件函数接收<code>http.HandlerFunc</code>并返回一个新的该类型函数&ndash;它可以在前者运行之前或之后插入一些代码，或者可以让原来的函数完全不运行。</p>
+
+<pre><code>func (s *server) adminOnly(h http.HanlerFunc) http.HandlerFunc{
+	return func(w http.ResponseWriter, r *http.Request){
+		if !currentUser(r).IsAdmin {
+			http.NotFound(w,r)
+			return
+		}
+		h(w,r)
+	}
+}
+</code></pre>
+
+<p>handler 内部的逻辑可以决定是否运行原来的handler，在上例中，如果<code>IsAdmin</code>是<code>false</code>，handler会返回一个404状态，并且结束运行，作为参数传入的<code>h</code>handler并没有被调用。</p>
+
+<p>相反，则<code>h</code>会被调用。</p>
+
+<p>通常中间件会被列在routes.go文件中：</p>
+
+<pre><code>...
+
+func (s *server) routes(){
+	...
+	s.router.HandleFunc(&quot;/admin&quot;,s.adminOnly(s.handleAdminIndex))
+}
+
+</code></pre>
+
+<h2 id="请求-响应自定义格式">请求、响应自定义格式</h2>
+
+<p>如果API端点有自己的请求和响应格式，一般只适用于特定的handler。</p>
+
+<p>需要在函数中对格式定义。</p>
+
+<pre><code>func (s *server) handleSometing() http.HandleFunc{
+	type request struct{
+		Name string
+	}
+
+	type response struct{
+		Greeting String `json:&quot;greeting&quot;`
+	}
+	return func(w http.ResponseWriter, r *http.Request){
+		...
+	}
+
+}
+</code></pre>
+
+<p>这样的写法会让包空间更加干净，并且允许使用相同的类型名称，不需要考虑特定处理函数的版本。</p>
+
+<p>在测试代码中，只需把这些类型复制到测试函数中即可。</p>
+
+<h2 id="测试类型可以帮助构建">测试类型可以帮助构建</h2>
+
+<p>如果请求/响应的格式类型隐藏在handle中，只需要在测试代码中定义新的类型。</p>
+
+<p>在这里可以为将来的人理解代码做一些帮助。</p>
+
+<p>例如如果有一个Person类型，可以在多个端点使用，greet端点只关心其中的name，就可以写如下测试代码：</p>
+
+<pre><code>func TestGreet(t *testing.T){
+	is := is.New(t)
+	p := struct{
+		Name string `json:&quot;name&quot;`
+	}{
+		Name : &quot;Mat&quot;,
+	}
+
+	var buf bytes.Buffer
+	err := json.NewEncoder(&amp;buf).Encode(p)
+	is.NoErr(err)
+	req,err := http.NewRequest(http.MethodPost,&quot;/greet&quot;,&amp;buf)
+	is.NoErr(err)
+}
+
+</code></pre>
+
+<p>可以清楚知道，我们只关心person的name。</p>
+
+<h2 id="sync-once">sync.Once</h2>
+
+<p>在准备handler时，如果必须要做一些代价昂贵的事情，则在第一次被调用的时候defer。（放在栈底）</p>
+
+<p>这会提升启动时间。</p>
+
+<pre><code>func (s *server) handleTemplate(files string...) http.HandleFunc{
+	var (
+		init sync.Once
+		tpl  *template.Template
+		err  error
+	)
+	return func(w http.ResponseWriter, r *http.Request){
+		init.Do(func(){
+			tpl,err = template.ParseFiles(files...)
+		})
+		if err != nil{
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		//use tpl
+	}
+}
+</code></pre>
+
+<p><code>sync.Once</code>保证代码只执行一次，处理其他请求时则会保持资源直到所有请求都完成。</p>
+
+<ul>
+<li>error检查在init函数外边，所以有错误时不会丢失掉</li>
+<li>如果handler没有被调用，则代价昂贵的事务永远不会执行</li>
+</ul>
+
+<h2 id="server是可测试的">server是可测试的</h2>
+
+<p>server类型是可测试的</p>
+
+<pre><code>func TestHandleAbout(t *testing.T){
+	is := is.New(t)
+	srv := server{
+		db:    mockDatabase,
+		email: mockEmailSender,
+	}
+
+	srv.routes()
+	req ,err := http.NewRequest(&quot;GET&quot;,&quot;/about&quot;,nil)
+	is.NoErr(err)
+	w := httptest.NewRecorder()
+	srv.ServeHTTP(w, r)
+	is.Equal(w.StatusCode, http.StatusOK)
+}
+</code></pre>
+
+<ul>
+<li>在每个测试中创建一个服务器实例，就算是很大组件也不会耗时太长</li>
+<li>通过测试ServeHTTP，可以测试整套系统</li>
+<li>使用httptest.NewRecorder记录handler的行为</li>
+</ul>
+
+<h2 id="原文链接">原文链接</h2>
+
+<p><a href="https://medium.com/statuscode/how-i-write-go-http-services-after-seven-years-37c208122831">How I write Go HTTP services after seven years</a></p>
+
+      
+      
+      
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'bonjour-yang';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+  </main>
+  
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://jutssam.github.io/post/points_in_go/" rel="prev">go部分重点记录</a></span>
+    
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-121684556-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

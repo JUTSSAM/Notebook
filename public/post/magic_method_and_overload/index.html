@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://j.noloss.cn/post/magic_method_and_overload/"/>
+  <link rel="canonical" href="http://jutssam.github.io/post/magic_method_and_overload/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/custom.css">
   
   
-  <link href="http://j.noloss.cn/index.xml" rel="alternate" type="application/rss+xml" title="Bonjour.Yang" />
-  <link href="http://j.noloss.cn/index.xml" rel="feed" type="application/rss+xml" title="Bonjour.Yang" />
+  <link href="http://jutssam.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Bonjour.Yang" />
+  <link href="http://jutssam.github.io/index.xml" rel="feed" type="application/rss+xml" title="Bonjour.Yang" />
 
   
   
@@ -42,14 +42,14 @@
   <header role="banner">
     <div class="row gutters">
       <div id="site-title" class="col span_6">
-        <h1><a href="http://j.noloss.cn/">Bonjour.Yang</a></h1>
+        <h1><a href="http://jutssam.github.io/">Bonjour.Yang</a></h1>
         <h2>务必使同志们继续地保持谦虚谨慎、不骄不躁的作风。务必使同志们继续地保持艰苦奋斗的作风。</h2>
       </div>
       <div id="social" class="col span_6">
         <ul>
-          <li><a href="https://twitter.com/jutssam" target="_blank">Twitter</a></li>
           
-          <li><a href="https://github.com/jutssam" target="_blank">GitHub</a></li>
+          
+          <li><a href="https://gitee.com/jutssam" target="_blank">GitHub</a></li>
           
         </ul>
       </div>
@@ -73,7 +73,7 @@
 
 <hr />
 
-<p><img src="https://upload-images.jianshu.io/upload_images/1594723-5813e1eb121f6be6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2400" alt="PHP中魔术方法" />
+<p><img src="https://upload-images.jianshu.io/upload_images/1594723-9a11768b47ae8c2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2100" alt="Magic Methods.png" />
 新标签中打开可查看大图</p>
 
 <h2 id="魔术方法简要叙述">魔术方法简要叙述</h2>
@@ -81,7 +81,7 @@
 <h3 id="construct-destruct">__construct&amp;__destruct</h3>
 
 <p><strong>构造函数</strong>与<strong>析构函数</strong>，这两个函数在许多编程语言中均有实现。
-PHP中比较特殊的是，需要以双下划线开头，(&gt;=5.6)。并且不能有重名函数存在。</p>
+PHP中比较特殊的是，需要以双下划线开头，(&gt;=5.4)。与类名同名的函数不再作为构造函数。要执行父类的构造函数，需要在子类构造函数中调用：parent::__construct()</p>
 
 <h3 id="get-set-isset-unset">__get&amp;__set&amp;__isset&amp;__unset</h3>
 
@@ -223,7 +223,10 @@ program is staticly calling  {$foo1} with [3,3]
 }
 </code></pre>
 
-<p>其使用方法是$app = Factory::$objName，利用这个函数可以做一个框架入口，具有很好的封装效果。</p>
+<p>其使用方法是$app = Factory::$objName，利用这个函数可以做一个框架入口，具有很好的封装效果。
+<img src="https://upload-images.jianshu.io/upload_images/1594723-dc2fe601bf8c6c79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2100" alt="Factory.png" /></p>
+
+<h3 id="autoload">__autoload()</h3>
 
 <h3 id="其余函数">其余函数</h3>
 
@@ -285,6 +288,14 @@ program is staticly calling  {$foo1} with [3,3]
 
 <h2 id="魔术方法底层实现原理">魔术方法底层实现原理</h2>
 
+<h3 id="reference">REFERENCE:</h3>
+
+<p><a href="http://php.net/manual/en/language.oop5.magic.php">PHP manual &ndash; Magic Methods</a></p>
+
+<p><a href="https://www.culttt.com/2014/04/16/php-magic-methods/">Cultt &ndash; What are PHP Magic Methods</a></p>
+
+<p><a href="http://www.php-internals.com/book/?p=chapt05/05-05-class-magic-methods-latebinding">第五节 魔术方法，延迟绑定及静态成员</a></p>
+
       
       
       
@@ -311,8 +322,10 @@ program is staticly calling  {$foo1} with [3,3]
   
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="http://j.noloss.cn/post/code_standard/" rel="prev">代码规范</a></span>
+      <span class="previous">&larr; <a href="http://jutssam.github.io/post/code_standard/" rel="prev">代码规范</a></span>
     
+    
+      <span class="next"><a href="http://jutssam.github.io/post/points_in_go/" rel="next">go部分重点记录</a> &rarr;</span>
     
   </nav>
 
@@ -321,7 +334,7 @@ program is staticly calling  {$foo1} with [3,3]
   <footer role="contentinfo">
     <div style="text-align:center;">
       
-      Written by JUTSSAM
+      
     </div>
   </footer>
 

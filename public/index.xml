@@ -2,34 +2,76 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Bonjour.Yang</title>
-    <link>http://j.noloss.cn/</link>
+    <link>http://jutssam.github.io/</link>
     <description>Recent content on Bonjour.Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 19 Jul 2018 11:28:05 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 03 Aug 2018 15:46:03 +0800</lastBuildDate>
     
-	<atom:link href="http://j.noloss.cn/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://jutssam.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>[译]我是如何用go写HTTP服务的</title>
+      <link>http://jutssam.github.io/post/how_i_write_go_http_services/</link>
+      <pubDate>Fri, 03 Aug 2018 15:46:03 +0800</pubDate>
+      
+      <guid>http://jutssam.github.io/post/how_i_write_go_http_services/</guid>
+      <description>自从go pre1.0版本，我就在使用go来构建HTTP API/Service。在我的Machin eBox项目中，需要构建大量的API来使之易用。
+这些年来，我构建服务的方式一直在变化，我想和大家分享一下现在所用的模式，希望能够帮到大家。
+服务类型结构体 所有的组件都有一个单独的server结构如下：
+type server struct{ db *someDatabase router *someRouter email EmailSender }  结构体中部分字段是他们共享的依赖(或者说是配置)。
+routes.go 在每个组件中都有一个文件routes.go包含所有的路由：
+package app func (s *server) routes(){ s.router.HandleFunc(&amp;quot;/api/&amp;quot;,s.handleAPI()) s.router.HandleFunc(&amp;quot;/about&amp;quot;,s.handleAbout()) s.router.HandleFunc(&amp;quot;/&amp;quot;,s.handleIndex()) }  方便代码维护，在此文件中可以很快找到代码所在位置。
+Handlers接受服务 func (s *server) handleSomething() http.HandleFunc {...}  Handler可以通过s变量获取相关依赖(配置)。
+返回Handler handler不处理请求，而是返回一个处理请求的函数。
+函数在闭包中运行。
+func (s *server) handleSomething() http.HandlerFunc { thing := prepareThing() return func(w http.ResponseWrier,r *http.Request){ // use thing } }  prepareThing只被调用一次，所以可用用来做初始化，然后将thing用于handler。
+如果要修改共用文件，记得需要互斥量或者其他机制来保护。
+获取handler特定的配置 handler需要特殊的配置时，可以将其作为一个参数。
+func (s *server) handleGreeting(format string) http.</description>
+    </item>
+    
+    <item>
+      <title>go部分重点记录</title>
+      <link>http://jutssam.github.io/post/points_in_go/</link>
+      <pubDate>Mon, 30 Jul 2018 10:06:05 +0800</pubDate>
+      
+      <guid>http://jutssam.github.io/post/points_in_go/</guid>
+      <description>go语言的字符(串) Strings, bytes, runes and characters in Go
+首先搞清楚字符串的储存方法，对于一个字符串从bytes角度来看是一视同仁的，不管你存的是什么字符、能不能输出，都是以二进制字节为单位存着。
+ASCII：固定8bit
+UTF8：变长，可用1-4个字节表示一个符号，根据不同的符号变化字节长度。
+go语言中，源代码存储格式是UTF8，因此字符串字面量(string literals)一般也是UTF8编码
+在Unicode中，将一个character定义为一个code unit，在go中对照的有rune类型。在range方法遍历字符串数组时，会按照变长类型区分字符。（汉字占3字节，数字英文占一字节）
+可以使用package unicode/utf8 对字符串进行操作， 如： fmt.Println(utf8.RuneCountInString(s)) 可获取rune类型字符数。
+字符串输出:
+   符号 输出 exmple     %x 单个字节16进制表示 fmt.Printf(&amp;ldquo;%x&amp;rdquo;,sample)   %q 无法打印字符用单个字节16进制表示 fmt.Printf(&amp;ldquo;%q&amp;rdquo;,sample)   %+q 无法打印字符用单个字节16进制表示，非ASCII码打印其Unicode编码 fmt.Printf(&amp;ldquo;%+q&amp;rdquo;,sample)    strings of go
+dive-into-go-1
+数组与切片 数组：有限的同一元素类型的对象的序列。定长。 Slice：描述数组的一个连续的片段。[)
+type SliceHeader struct{ Data uintptr Len int Cap int }  数组可能在数组和多个slice中公用，会导致修改异步问题。
+数据类型转换 结构体匿名字段 鸭子类型 duck typing</description>
+    </item>
+    
+    <item>
       <title>魔术方法和重载</title>
-      <link>http://j.noloss.cn/post/magic_method_and_overload/</link>
+      <link>http://jutssam.github.io/post/magic_method_and_overload/</link>
       <pubDate>Thu, 19 Jul 2018 11:28:05 +0800</pubDate>
       
-      <guid>http://j.noloss.cn/post/magic_method_and_overload/</guid>
+      <guid>http://jutssam.github.io/post/magic_method_and_overload/</guid>
       <description>标签： PHP
 新标签中打开可查看大图
-魔术方法简要叙述 __construct&amp;amp;__destruct 构造函数与析构函数，这两个函数在许多编程语言中均有实现。 PHP中比较特殊的是，需要以双下划线开头，(&amp;gt;=5.6)。并且不能有重名函数存在。
+魔术方法简要叙述 __construct&amp;amp;__destruct 构造函数与析构函数，这两个函数在许多编程语言中均有实现。 PHP中比较特殊的是，需要以双下划线开头，(&amp;gt;=5.4)。与类名同名的函数不再作为构造函数。要执行父类的构造函数，需要在子类构造函数中调用：parent::__construct()
 __get&amp;amp;__set&amp;amp;__isset&amp;amp;__unset 在访问不可访问属性时将会触发此类函数,原本的操作反而不会执行。此类函数可以用来实现类的getter与setter，但是对于PHP这种效率为王的语言，开发者们多半不会考虑此类繁琐的事情。 实现代码如下：
 &amp;lt;?php class Magic{ protected $pro1; protected $pro2; function __get($pro){ echo &amp;quot;__get is running and is getting {$pro}\n&amp;quot;; return $this-&amp;gt;$pro; } function __set($pro,$value) { echo &amp;quot;__set is running and is seting {$pro} as {$value}\n&amp;quot;; $this-&amp;gt;$pro = $value; } function __isset($pro) { return isset($this-&amp;gt;$pro); echo &amp;quot;__isset is running and is checking {$pro}.\n&amp;quot;; } function __unset($pro) { unset($this-&amp;gt;$pro); echo &amp;quot;__unset is running and is checking {$pro}.</description>
     </item>
     
     <item>
       <title>代码规范</title>
-      <link>http://j.noloss.cn/post/code_standard/</link>
+      <link>http://jutssam.github.io/post/code_standard/</link>
       <pubDate>Thu, 19 Jul 2018 11:23:04 +0800</pubDate>
       
-      <guid>http://j.noloss.cn/post/code_standard/</guid>
+      <guid>http://jutssam.github.io/post/code_standard/</guid>
       <description>标签：PHP
 看PSR文档寻找规范太繁琐，不如自己写一份示例
 示例代码片段 &amp;lt;?php /* * This file is part of the {project} * * (c) {nickname} &amp;lt;{email}&amp;gt; * * [This source file is subject to the MIT license that is bundled * with this source code in the file LICENSE.] */ namespace Code\Kernel\Standard; use PHP\Standard\Psr as JutssamStandard; /** * {ClassName}[ ：{ Introducetion ...}] * * @author {nickname} &amp;lt;{email}&amp;gt; * * @property \Code\Kernel\Comment $comment * @property \Code\Kernel\TextBody $text_body * @property \Code\Kernel\Artistic $artistic */ Class Application extends ServiceProvider { /** * @var array */ protected $item; /** * @var stirng */ protected $type; /** * @var int */ protected $count; /** * Constructor * * @param array $item * @param int $count * @param string $type * */ public function __construct(array $item, int count, string $type) { parent::__construct(); $this-&amp;gt;item = $item; $this-&amp;gt;count = $count; $this-&amp;gt;type = $type; } /** * Getter * * @return int */ public function getCount() { return $this-&amp;gt;count; } /** * Push new item in.</description>
@@ -37,10 +79,10 @@ __get&amp;amp;__set&amp;amp;__isset&amp;amp;__unset 在访问不可访问属性�
     
     <item>
       <title>[译] PHP虚拟机</title>
-      <link>http://j.noloss.cn/post/php_vitual_machine/</link>
+      <link>http://jutssam.github.io/post/php_vitual_machine/</link>
       <pubDate>Sun, 01 Jul 2018 12:32:13 +0800</pubDate>
       
-      <guid>http://j.noloss.cn/post/php_vitual_machine/</guid>
+      <guid>http://jutssam.github.io/post/php_vitual_machine/</guid>
       <description>标签： PHP
 本篇文章旨在提供一个对PHP7版本中Zend虚拟机的概述，不会做到面面俱到的详细叙述，但尽力包含大多数重要的部分，以及更精细的细节。
 这篇文章描述的主要背景是PHP版本7.2（当前正在开发版本），但几乎同样适用于PHP7.0/7.1版本中。然而，PHP5.x系列版本的虚拟机之间差别比较显著，笔者不会去比较。
