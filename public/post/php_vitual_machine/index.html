@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://jutssam.github.io/post/php_vitual_machine/"/>
+  <link rel="canonical" href="http://j.noloss.cn/post/php_vitual_machine/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -24,8 +24,8 @@
   <link rel="stylesheet" href="/css/custom.css">
   
   
-  <link href="http://jutssam.github.io/index.xml" rel="alternate" type="application/rss+xml" title="Bonjour.Yang" />
-  <link href="http://jutssam.github.io/index.xml" rel="feed" type="application/rss+xml" title="Bonjour.Yang" />
+  <link href="http://j.noloss.cn/index.xml" rel="alternate" type="application/rss+xml" title="Bonjour.Yang" />
+  <link href="http://j.noloss.cn/index.xml" rel="feed" type="application/rss+xml" title="Bonjour.Yang" />
 
   
   
@@ -42,7 +42,7 @@
   <header role="banner">
     <div class="row gutters">
       <div id="site-title" class="col span_6">
-        <h1><a href="http://jutssam.github.io/">Bonjour.Yang</a></h1>
+        <h1><a href="http://j.noloss.cn/">Bonjour.Yang</a></h1>
         <h2>务必使同志们继续地保持谦虚谨慎、不骄不躁的作风。务必使同志们继续地保持艰苦奋斗的作风。</h2>
       </div>
       <div id="social" class="col span_6">
@@ -486,10 +486,10 @@ ASSIGN_REF V1 V3
 <p>现在，这个机制是在引发异常之后导致HANDLE_EXCEPTION操作码执行的原因。但它有什么作用？首先，它确定是否在try块内引发异常。为此，op数组包含一个try_catch_elements数组，用于跟踪try，catch和finally块的opline偏移量：</p>
 
 <pre><code>typedef struct _zend_try_catch_element {
-    uint32_t try_op;
-    uint32_t catch_op;  /* ketchup! */
-    uint32_t finally_op;
-    uint32_t finally_end;
+	uint32_t try_op;
+	uint32_t catch_op;  /* ketchup! */
+	uint32_t finally_op;
+	uint32_t finally_end;
 } zend_try_catch_element;
 </code></pre>
 
@@ -897,30 +897,30 @@ L7:   FREE T7
 
 <pre><code>ZEND_VM_HANDLER(6, ZEND_SL, CONST|TMPVAR|CV, CONST|TMPVAR|CV)
 {
-    USE_OPLINE
-    zend_free_op free_op1, free_op2;
-    zval *op1, *op2;
+	USE_OPLINE
+	zend_free_op free_op1, free_op2;
+	zval *op1, *op2;
 
-    op1 = GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R);
-    op2 = GET_OP2_ZVAL_PTR_UNDEF(BP_VAR_R);
-    if (EXPECTED(Z_TYPE_INFO_P(op1) == IS_LONG)
-            &amp;&amp; EXPECTED(Z_TYPE_INFO_P(op2) == IS_LONG)
-            &amp;&amp; EXPECTED((zend_ulong)Z_LVAL_P(op2) &lt; SIZEOF_ZEND_LONG * 8)) {
-        ZVAL_LONG(EX_VAR(opline-&gt;result.var), Z_LVAL_P(op1) &lt;&lt; Z_LVAL_P(op2));
-        ZEND_VM_NEXT_OPCODE();
-    }
+	op1 = GET_OP1_ZVAL_PTR_UNDEF(BP_VAR_R);
+	op2 = GET_OP2_ZVAL_PTR_UNDEF(BP_VAR_R);
+	if (EXPECTED(Z_TYPE_INFO_P(op1) == IS_LONG)
+			&amp;&amp; EXPECTED(Z_TYPE_INFO_P(op2) == IS_LONG)
+			&amp;&amp; EXPECTED((zend_ulong)Z_LVAL_P(op2) &lt; SIZEOF_ZEND_LONG * 8)) {
+		ZVAL_LONG(EX_VAR(opline-&gt;result.var), Z_LVAL_P(op1) &lt;&lt; Z_LVAL_P(op2));
+		ZEND_VM_NEXT_OPCODE();
+	}
 
-    SAVE_OPLINE();
-    if (OP1_TYPE == IS_CV &amp;&amp; UNEXPECTED(Z_TYPE_INFO_P(op1) == IS_UNDEF)) {
-        op1 = GET_OP1_UNDEF_CV(op1, BP_VAR_R);
-    }
-    if (OP2_TYPE == IS_CV &amp;&amp; UNEXPECTED(Z_TYPE_INFO_P(op2) == IS_UNDEF)) {
-        op2 = GET_OP2_UNDEF_CV(op2, BP_VAR_R);
-    }
-    shift_left_function(EX_VAR(opline-&gt;result.var), op1, op2);
-    FREE_OP1();
-    FREE_OP2();
-    ZEND_VM_NEXT_OPCODE_CHECK_EXCEPTION();
+	SAVE_OPLINE();
+	if (OP1_TYPE == IS_CV &amp;&amp; UNEXPECTED(Z_TYPE_INFO_P(op1) == IS_UNDEF)) {
+		op1 = GET_OP1_UNDEF_CV(op1, BP_VAR_R);
+	}
+	if (OP2_TYPE == IS_CV &amp;&amp; UNEXPECTED(Z_TYPE_INFO_P(op2) == IS_UNDEF)) {
+		op2 = GET_OP2_UNDEF_CV(op2, BP_VAR_R);
+	}
+	shift_left_function(EX_VAR(opline-&gt;result.var), op1, op2);
+	FREE_OP1();
+	FREE_OP2();
+	ZEND_VM_NEXT_OPCODE_CHECK_EXCEPTION();
 }
 </code></pre>
 
@@ -1078,7 +1078,7 @@ ZEND_VM_RETURN()
   <nav class="pagination-single">
     
     
-      <span class="next"><a href="http://jutssam.github.io/post/code_standard/" rel="next">代码规范</a> &rarr;</span>
+      <span class="next"><a href="http://j.noloss.cn/post/code_standard/" rel="next">代码规范</a> &rarr;</span>
     
   </nav>
 
