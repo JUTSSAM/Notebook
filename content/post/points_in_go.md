@@ -60,7 +60,14 @@ _duck typing_
 go中通过接口和duck typing支持面向对象的编程。
 
 如果一个接口有一系列方法，不需要implement接口就可以使用这些方法。(If it has a set of methods that match an interface, then you can use it wherever that interface is needed without explicitly defining that your types implement that interface.)
+在 Go 语言中，如果一个类型实现了一个接口的所有方法，那么这个类型的实
+例就可以存储在这个接口类型的实例中，不需要额外声明。
 
 [Duck typing in Go](https://medium.com/@matryer/golang-advent-calendar-day-one-duck-typing-a513aaed544d)
 
 ↑一篇文章看懂duck typing
+
+
+## 面向接口编程
+
+使用接口作为代码复用的基本模块。
