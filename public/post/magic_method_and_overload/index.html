@@ -89,46 +89,46 @@ PHP中比较特殊的是，需要以双下划线开头，(&gt;=5.4)。与类名�
 实现代码如下：</p>
 
 <pre><code>&lt;?php
-    class Magic{
-        
-        protected $pro1;
-        protected $pro2;
+	class Magic{
+		
+		protected $pro1;
+		protected $pro2;
 
-        function __get($pro){
-            echo &quot;__get is running and is getting {$pro}\n&quot;;
-            return $this-&gt;$pro;
-        }
+		function __get($pro){
+			echo &quot;__get is running and is getting {$pro}\n&quot;;
+			return $this-&gt;$pro;
+		}
 
-        function __set($pro,$value)
-        {
-            echo &quot;__set is running and is seting {$pro} as {$value}\n&quot;;
-            $this-&gt;$pro = $value;
-        }
+		function __set($pro,$value)
+		{
+			echo &quot;__set is running and is seting {$pro} as {$value}\n&quot;;
+			$this-&gt;$pro = $value;
+		}
 
-        function __isset($pro)
-        {
-            return isset($this-&gt;$pro);
-            echo &quot;__isset is running and is checking {$pro}.\n&quot;;
-        }
+		function __isset($pro)
+		{
+			return isset($this-&gt;$pro);
+			echo &quot;__isset is running and is checking {$pro}.\n&quot;;
+		}
 
-        function __unset($pro)
-        {
-            unset($this-&gt;$pro);
-            echo &quot;__unset is running and is checking {$pro}.\n&quot;;
-        }
-    }
+		function __unset($pro)
+		{
+			unset($this-&gt;$pro);
+			echo &quot;__unset is running and is checking {$pro}.\n&quot;;
+		}
+	}
 
-    $magic = new Magic();
+	$magic = new Magic();
 
-    $magic-&gt;pro2 = '2'; //赋值没有执行
-    echo $magic-&gt;pro2.&quot;\n&quot;;  //同样echo没有运行
+	$magic-&gt;pro2 = '2'; //赋值没有执行
+	echo $magic-&gt;pro2.&quot;\n&quot;;  //同样echo没有运行
 
-    $re = isset($magic-&gt;pro2);
-    var_dump($re);
+	$re = isset($magic-&gt;pro2);
+	var_dump($re);
 
-    unset($magic-&gt;pro2);
-        
-    
+	unset($magic-&gt;pro2);
+		
+	
 </code></pre>
 
 <p>输出:</p>
@@ -150,33 +150,33 @@ __unset is running and is checking pro2.
 这两个函数均有两个参数：string $name &ndash; 函数名，array $args &ndash; 调用参数数组。</p>
 
 <pre><code>&lt;?php
-    class Magic{
-        
-        protected $pro1;
-        protected $pro2;
+	class Magic{
+		
+		protected $pro1;
+		protected $pro2;
 
-        protected function func1()
-        {
-            var_dump($this-&gt;pro1);
-        }
+		protected function func1()
+		{
+			var_dump($this-&gt;pro1);
+		}
 
-        public static function func2(){
-            echo &quot;func2 is running.\n&quot;;
-        }
+		public static function func2(){
+			echo &quot;func2 is running.\n&quot;;
+		}
 
-        function __call($foo1,$arg){
-            echo &quot;program is calling {$foo1} with &quot;.json_encode($arg).&quot;\n&quot;; 
-        }
+		function __call($foo1,$arg){
+			echo &quot;program is calling {$foo1} with &quot;.json_encode($arg).&quot;\n&quot;;	
+		}
 
-        public static function __callStatic($foo1,$arg){
-            echo 'program is staticly calling  {$foo1} with '.json_encode($arg).&quot;\n&quot;;
-        }
-    }
+		public static function __callStatic($foo1,$arg){
+			echo 'program is staticly calling  {$foo1} with '.json_encode($arg).&quot;\n&quot;;
+		}
+	}
 
-    $magic = new Magic();
-    $magic-&gt;fun1(1,1);
-    Magic::func2(2,2);
-    Magic::func3(3,3);
+	$magic = new Magic();
+	$magic-&gt;fun1(1,1);
+	Magic::func2(2,2);
+	Magic::func3(3,3);
 </code></pre>
 
 <p>输出：</p>

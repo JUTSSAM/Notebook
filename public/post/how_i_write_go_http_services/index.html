@@ -79,9 +79,9 @@ eBox项目中，需要构建大量的API来使之易用。</p>
 <p>所有的组件都有一个单独的<code>server</code>结构如下：</p>
 
 <pre><code>type server struct{
-    db      *someDatabase
-    router  *someRouter
-    email    EmailSender
+	db      *someDatabase
+	router  *someRouter
+	email 	 EmailSender
 }
 </code></pre>
 
@@ -94,9 +94,9 @@ eBox项目中，需要构建大量的API来使之易用。</p>
 <pre><code>package app
 
 func (s *server) routes(){
-    s.router.HandleFunc(&quot;/api/&quot;,s.handleAPI())
-    s.router.HandleFunc(&quot;/about&quot;,s.handleAbout())
-    s.router.HandleFunc(&quot;/&quot;,s.handleIndex())
+	s.router.HandleFunc(&quot;/api/&quot;,s.handleAPI())
+	s.router.HandleFunc(&quot;/about&quot;,s.handleAbout())
+	s.router.HandleFunc(&quot;/&quot;,s.handleIndex())
 }
 </code></pre>
 
@@ -116,10 +116,10 @@ func (s *server) routes(){
 <p>函数在闭包中运行。</p>
 
 <pre><code>func (s *server) handleSomething() http.HandlerFunc {
-    thing := prepareThing()
-    return func(w http.ResponseWrier,r *http.Request){
-        // use thing
-    }
+	thing := prepareThing()
+	return func(w http.ResponseWrier,r *http.Request){
+		// use thing
+	}
 }
 </code></pre>
 
@@ -132,9 +132,9 @@ func (s *server) routes(){
 <p>handler需要特殊的配置时，可以将其作为一个参数。</p>
 
 <pre><code>func (s *server) handleGreeting(format string) http.HandleFunc(){
-    return func(w http.ResponseWriter, r *http.Request){
-        fmt.Fprintf(w,format,&quot;world&quot;)
-    }
+	return func(w http.ResponseWriter, r *http.Request){
+		fmt.Fprintf(w,format,&quot;world&quot;)
+	}
 }
 </code></pre>
 
@@ -143,9 +143,9 @@ func (s *server) routes(){
 <p>我更喜欢使用http.HandlerFunc 而不是 http.Handler</p>
 
 <pre><code>func (s *server) handleSomething() http.HandlerFunc {
-    return func(w http.ResponseWrier,r *http.Request){
+	return func(w http.ResponseWrier,r *http.Request){
 
-    }
+	}
 }
 </code></pre>
 
@@ -156,13 +156,13 @@ func (s *server) routes(){
 <p>中间件函数接收<code>http.HandlerFunc</code>并返回一个新的该类型函数&ndash;它可以在前者运行之前或之后插入一些代码，或者可以让原来的函数完全不运行。</p>
 
 <pre><code>func (s *server) adminOnly(h http.HanlerFunc) http.HandlerFunc{
-    return func(w http.ResponseWriter, r *http.Request){
-        if !currentUser(r).IsAdmin {
-            http.NotFound(w,r)
-            return
-        }
-        h(w,r)
-    }
+	return func(w http.ResponseWriter, r *http.Request){
+		if !currentUser(r).IsAdmin {
+			http.NotFound(w,r)
+			return
+		}
+		h(w,r)
+	}
 }
 </code></pre>
 
@@ -175,8 +175,8 @@ func (s *server) routes(){
 <pre><code>...
 
 func (s *server) routes(){
-    ...
-    s.router.HandleFunc(&quot;/admin&quot;,s.adminOnly(s.handleAdminIndex))
+	...
+	s.router.HandleFunc(&quot;/admin&quot;,s.adminOnly(s.handleAdminIndex))
 }
 
 </code></pre>
@@ -188,16 +188,16 @@ func (s *server) routes(){
 <p>需要在函数中对格式定义。</p>
 
 <pre><code>func (s *server) handleSometing() http.HandleFunc{
-    type request struct{
-        Name string
-    }
+	type request struct{
+		Name string
+	}
 
-    type response struct{
-        Greeting String `json:&quot;greeting&quot;`
-    }
-    return func(w http.ResponseWriter, r *http.Request){
-        ...
-    }
+	type response struct{
+		Greeting String `json:&quot;greeting&quot;`
+	}
+	return func(w http.ResponseWriter, r *http.Request){
+		...
+	}
 
 }
 </code></pre>
@@ -215,18 +215,18 @@ func (s *server) routes(){
 <p>例如如果有一个Person类型，可以在多个端点使用，greet端点只关心其中的name，就可以写如下测试代码：</p>
 
 <pre><code>func TestGreet(t *testing.T){
-    is := is.New(t)
-    p := struct{
-        Name string `json:&quot;name&quot;`
-    }{
-        Name : &quot;Mat&quot;,
-    }
+	is := is.New(t)
+	p := struct{
+		Name string `json:&quot;name&quot;`
+	}{
+		Name : &quot;Mat&quot;,
+	}
 
-    var buf bytes.Buffer
-    err := json.NewEncoder(&amp;buf).Encode(p)
-    is.NoErr(err)
-    req,err := http.NewRequest(http.MethodPost,&quot;/greet&quot;,&amp;buf)
-    is.NoErr(err)
+	var buf bytes.Buffer
+	err := json.NewEncoder(&amp;buf).Encode(p)
+	is.NoErr(err)
+	req,err := http.NewRequest(http.MethodPost,&quot;/greet&quot;,&amp;buf)
+	is.NoErr(err)
 }
 
 </code></pre>
@@ -240,21 +240,21 @@ func (s *server) routes(){
 <p>这会提升启动时间。</p>
 
 <pre><code>func (s *server) handleTemplate(files string...) http.HandleFunc{
-    var (
-        init sync.Once
-        tpl  *template.Template
-        err  error
-    )
-    return func(w http.ResponseWriter, r *http.Request){
-        init.Do(func(){
-            tpl,err = template.ParseFiles(files...)
-        })
-        if err != nil{
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-            return
-        }
-        //use tpl
-    }
+	var (
+		init sync.Once
+		tpl  *template.Template
+		err  error
+	)
+	return func(w http.ResponseWriter, r *http.Request){
+		init.Do(func(){
+			tpl,err = template.ParseFiles(files...)
+		})
+		if err != nil{
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		//use tpl
+	}
 }
 </code></pre>
 
@@ -269,20 +269,24 @@ func (s *server) routes(){
 
 <p>server类型是可测试的</p>
 
-<pre><code>func TestHandleAbout(t *testing.T){
-    is := is.New(t)
-    srv := server{
-        db:    mockDatabase,
-        email: mockEmailSender,
-    }
+<pre><code>func TestHandleAbout(t *testing/.T){
 
-    srv.routes()
-    req ,err := http.NewRequest(&quot;GET&quot;,&quot;/about&quot;,nil)
-    is.NoErr(err)
-    w := httptest.NewRecorder()
-    srv.ServeHTTP(w, r)
-    is.Equal(w.StatusCode, http.StatusOK)
+	is := is.New(t)
+	
+	srv := server{
+		db:    mockDatabase,
+		email: mockEmailSender,
+	}
+
+	srv.routes()
+	req ,err := http.NewRequest(&quot;GET&quot;,&quot;/about&quot;,nil)
+	is.NoErr(err)
+	w := httptest.NewRecorder()
+	srv.ServeHTTP(w, r)
+	is.Equal(w.StatusCode, http.StatusOK)
+
 }
+
 </code></pre>
 
 <ul>
@@ -323,6 +327,8 @@ func (s *server) routes(){
     
       <span class="previous">&larr; <a href="http://j.noloss.cn/post/points_in_go/" rel="prev">go部分重点记录</a></span>
     
+    
+      <span class="next"><a href="http://j.noloss.cn/post/docker_introduction/" rel="next">Docker应用导论</a> &rarr;</span>
     
   </nav>
 

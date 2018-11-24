@@ -6,10 +6,32 @@
     <description>Recent content on Bonjour.Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 03 Aug 2018 15:46:03 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 23 Nov 2018 22:49:22 +0800</lastBuildDate>
     
 	<atom:link href="http://j.noloss.cn/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Docker应用导论</title>
+      <link>http://j.noloss.cn/post/docker_introduction/</link>
+      <pubDate>Fri, 23 Nov 2018 22:49:22 +0800</pubDate>
+      
+      <guid>http://j.noloss.cn/post/docker_introduction/</guid>
+      <description>一.安装 根据官网指引安装即可： https://docs.docker.com/install/
+二.概念解释 镜像（image）&amp;amp; 容器（container）：镜像和容器的关系类似于操作系统中 [程序] 和 [进程] 的关系，镜像中包含应用中所需要的所有文件内容，运行当中的镜像实例，则被称为容器。
+服务（service）&amp;amp; 栈（stack）：笔者简单理解为，单机中多容器应用的部署使用的是service工具，在集群当中部署服务时，则需要栈工具。
+集群（swarm）：一系列运行docker的主机，使用swarm进行统一的配置和管理。
+三.应用 部署单机多容器开发环境(以开源项目laradock为例)  docker-compose  compose可以用来定义和管理多容器应用，通过配置yaml格式的文件，定义所需要的容器版本以及环境变量。
+通过docker-compose build建立配置中设定的容器。
+docker-compose up和docker-compose down分别管理应用的开启和关闭。
+ 容器的ip地址  每次容器启动时，都会获得一个docker内网ip地址，可通过以下命令获取：
+docker inspect --format=&#39;{{.Name}} - {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}&#39; $(docker ps -aq)
+容器之间通信即使用此ip地址。
+laradok是一个全面的PHP单机开发环境，可选择安装单机应用所需要的容器。 仅需要三步即可在docker中运行PHP应用。
+ 1 git clone https://github.com/Laradock/laradock.git 2 cp env-example .env 3 docker-compose up -d nginx mysql phpmyadmin redis workspace  通过浏览器 http://localhost 即可看到页面运行的结果。
+laradock默认安装当前最新发行版，对于一些基于老版本开发的项目可能会出现冲突的情况，此时需要修改镜像的版本，重新拉取：
+1 修改laradock/.env 中容器版本**_VERSION={需要的版本} 2 运行 docker-compose build --no-cache {image-name}  laradock 将 [laradock文件所在目录] 映射到/var/www/目录中， [容器配置文件]在 laradock/{container-name}/中。</description>
+    </item>
     
     <item>
       <title>[译]我是如何用go写HTTP服务的</title>

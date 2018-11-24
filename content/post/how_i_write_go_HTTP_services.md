@@ -216,11 +216,11 @@ func (s *server) handleTemplate(files string...) http.HandleFunc{
 
 server类型是可测试的
 
-```
-func TestHandleAbout(t *testing.T)
-{
+``` 
+func TestHandleAbout(t *testing/.T){
 
 	is := is.New(t)
+	
 	srv := server{
 		db:    mockDatabase,
 		email: mockEmailSender,
@@ -234,6 +234,7 @@ func TestHandleAbout(t *testing.T)
 	is.Equal(w.StatusCode, http.StatusOK)
 
 }
+
 ```
 
 - 在每个测试中创建一个服务器实例，就算是很大组件也不会耗时太长
