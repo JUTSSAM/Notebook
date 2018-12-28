@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    Posts | Bonjour.Yang
+    SVM - 支持向量机 | Bonjour.Yang
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://j.noloss.cn/post/"/>
+  <link rel="canonical" href="http://j.noloss.cn/post/svm/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -58,74 +58,68 @@
 
 
   
-  <main id="list" role="main">
-    <div class="article-header light-gray"><h1>#Posts</h1></div>
-    
-    <div class="summary">
-      <h2><a href="http://j.noloss.cn/post/svm/">SVM - 支持向量机 </a></h2>
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>SVM - 支持向量机</h1>
       <div class="meta">
         Dec 28, 2018 &nbsp;
         
       </div>
     </div>
+    <article>
+      
+
+<ul>
+<li>通用的前反馈网络。</li>
+<li>用于模式分类和非线性回归。</li>
+<li>线性机器。</li>
+<li>主要思想：建立一个超平面作为决策曲面，使得正例和反例之间的隔离边缘被最大化。</li>
+<li>结构风险最小化方法的近似实现。</li>
+<li>构造关键：在“支持向量”和输入空间抽取的向量x之间的内积核。</li>
+</ul>
+
+<p>构建三种类型：
+- 多项式学习机器
+- 径向基函数网络
+- 两层感知器</p>
+
+<h2 id="线性可分模型的最优超平面">线性可分模型的最优超平面</h2>
+
+<p>假定输入模式线性可分，用于分离的超平面的决策曲面方程是：
+wx+b=0
+从该平面到最近的数据点之间的距离间隔被称为[分离边缘]，用ρ表示。svm的目标是找到一个特殊的超平面，使得ρ最大。在此条件下，决策曲面被称为最优超平面。
+支持向量指的是那些靠近决策面的数据点。</p>
+
+      
+      
+      
+    </article>
     
-    <div class="summary">
-      <h2><a href="http://j.noloss.cn/post/rbfn/">RBFN - 径向基函数网络 </a></h2>
-      <div class="meta">
-        Dec 27, 2018 &nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://j.noloss.cn/post/docker_introduction/">Docker应用导论 </a></h2>
-      <div class="meta">
-        Nov 23, 2018 &nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://j.noloss.cn/post/how_i_write_go_http_services/">[译]我是如何用go写HTTP服务的 </a></h2>
-      <div class="meta">
-        Aug 3, 2018 &nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://j.noloss.cn/post/points_in_go/">go部分重点记录 </a></h2>
-      <div class="meta">
-        Jul 30, 2018 &nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://j.noloss.cn/post/magic_method_and_overload/">魔术方法和重载 </a></h2>
-      <div class="meta">
-        Jul 19, 2018 &nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://j.noloss.cn/post/code_standard/">代码规范 </a></h2>
-      <div class="meta">
-        Jul 19, 2018 &nbsp;
-        
-      </div>
-    </div>
-    
-    <div class="summary">
-      <h2><a href="http://j.noloss.cn/post/php_vitual_machine/">[译] PHP虚拟机 </a></h2>
-      <div class="meta">
-        Jul 1, 2018 &nbsp;
-        
-      </div>
-    </div>
-    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'bonjour-yang';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
   </main>
+  
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://j.noloss.cn/post/rbfn/" rel="prev">RBFN - 径向基函数网络</a></span>
+    
+    
+  </nav>
 
 
   

@@ -6,10 +6,37 @@
     <description>Recent content on Bonjour.Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 23 Nov 2018 22:49:22 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 28 Dec 2018 15:23:36 +0800</lastBuildDate>
     
 	<atom:link href="http://j.noloss.cn/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SVM - 支持向量机</title>
+      <link>http://j.noloss.cn/post/svm/</link>
+      <pubDate>Fri, 28 Dec 2018 15:23:36 +0800</pubDate>
+      
+      <guid>http://j.noloss.cn/post/svm/</guid>
+      <description>通用的前反馈网络。 用于模式分类和非线性回归。 线性机器。 主要思想：建立一个超平面作为决策曲面，使得正例和反例之间的隔离边缘被最大化。 结构风险最小化方法的近似实现。 构造关键：在“支持向量”和输入空间抽取的向量x之间的内积核。  构建三种类型： - 多项式学习机器 - 径向基函数网络 - 两层感知器
+线性可分模型的最优超平面 假定输入模式线性可分，用于分离的超平面的决策曲面方程是： wx+b=0 从该平面到最近的数据点之间的距离间隔被称为[分离边缘]，用ρ表示。svm的目标是找到一个特殊的超平面，使得ρ最大。在此条件下，决策曲面被称为最优超平面。 支持向量指的是那些靠近决策面的数据点。</description>
+    </item>
+    
+    <item>
+      <title>RBFN - 径向基函数网络</title>
+      <link>http://j.noloss.cn/post/rbfn/</link>
+      <pubDate>Thu, 27 Dec 2018 21:33:59 +0800</pubDate>
+      
+      <guid>http://j.noloss.cn/post/rbfn/</guid>
+      <description>概念解释： vector &amp;lt;=&amp;gt; patern 即 向量和模式的概念在此文中是相同的。  RBF( 径向基函数网络 )  将神经网络的设计看作是一个高维空间的曲线拟合（逼近）问题，采用不用的方法进行设计。 学习 =&amp;gt; 在多维空间中寻找一个能够最佳拟合(统计意义上的)训练数据的曲面。 泛化 =&amp;gt; 利用多维曲面对测试数据进行插值。（?多维空间中传统的严格插值法）  神经网络中的隐藏单元提供一个“函数”集，该函数集在输入模式（向量）拓展至隐藏空间时为其构造了一个任意的“基”；这个函数集中的函数就称为径向基函数。
+最基本形式的径向基函数网络(RBFN)由三层构成：
+ 输入层：源点（感知单元），网络与外界环境连接。 隐层：非线性变换 输出层：现行，为输入层的激活信号提供响应。  模式可分性的Cover定理 将 [复杂的模式分类问题] 非线性地 投射 到 [高维空间] 将比投射到 [低维空间] 更可能是 [线性可分的]。
+具有线性可分性的分类问题更容易解决，通过RBF网络作为模式分类器更易得到线性可分。
+给定一族曲面，每个曲面都能自然地将输入空间自然地分成两个区域。用ae代表N个模式（向量）x1&amp;hellip;xN的集合，每一个都分属于ae1和ae2中的一类。如果这族曲面中存在[一个]曲面能把分属于ae1和ae2的点分成两部分，则称这些点的二元划分关于这族曲面是可分的。
+对于每一个模式向量，定义一个由一组实值函数fi组成的向量F。假设模式x是m0维向量上的点，则函数将m0维输入空间的点映射到新的m1维空间的对应的点上。将fi称为[隐藏函数]，它与前反馈神经网络中的隐藏单元起着相同的作用。生成的新的空间被称为[隐藏空间]或者[特征空间]。
+如果在新的m1维空间中存在超平面使得fx可分，则该定义该超平面为隐藏空间（f空间）的[分离曲面]。
+推论 - 一组随机指定的输入模式的集合在m1维空间中线性可分，它的元素数目的最大期望等于2m1。
+插值问题 可以用非线性变换将一个复杂的非线性滤波问题转化为一个较简单的线性滤波问题。</description>
+    </item>
     
     <item>
       <title>Docker应用导论</title>
