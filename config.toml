@@ -1,4 +1,5 @@
 baseURL = "http://j.noloss.cn/"
+publishDir = "docs"
 languageCode = "zh-cn"
 title = "Bonjour.Yang"
 theme = "angels-ladder"

@@ -2,7 +2,6 @@
 title: "Java基础知识"
 date: 2019-02-26T20:51:47+08:00
 draft: false
-top:true
 ---
 
 [TOC]

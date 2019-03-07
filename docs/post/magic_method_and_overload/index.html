@@ -1,0 +1,358 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    魔术方法和重载 | Bonjour.Yang
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="http://j.noloss.cn/post/magic_method_and_overload/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="http://j.noloss.cn/index.xml" rel="alternate" type="application/rss+xml" title="Bonjour.Yang" />
+  <link href="http://j.noloss.cn/index.xml" rel="feed" type="application/rss+xml" title="Bonjour.Yang" />
+
+  
+  
+
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="http://j.noloss.cn/">Bonjour.Yang</a></h1>
+        <h2>务必使同志们继续地保持谦虚谨慎、不骄不躁的作风。务必使同志们继续地保持艰苦奋斗的作风。</h2>
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          
+          
+          <li><a href="https://gitee.com/jutssam" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>魔术方法和重载</h1>
+      <div class="meta">
+        Jul 19, 2018 &nbsp;
+        
+      </div>
+    </div>
+    <article>
+      
+
+<p>标签： PHP</p>
+
+<hr />
+
+<p><img src="https://upload-images.jianshu.io/upload_images/1594723-9a11768b47ae8c2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2100" alt="Magic Methods.png" />
+新标签中打开可查看大图</p>
+
+<h2 id="魔术方法简要叙述">魔术方法简要叙述</h2>
+
+<h3 id="construct-destruct">__construct&amp;__destruct</h3>
+
+<p><strong>构造函数</strong>与<strong>析构函数</strong>，这两个函数在许多编程语言中均有实现。
+PHP中比较特殊的是，需要以双下划线开头，(&gt;=5.4)。与类名同名的函数不再作为构造函数。要执行父类的构造函数，需要在子类构造函数中调用：parent::__construct()</p>
+
+<h3 id="get-set-isset-unset">__get&amp;__set&amp;__isset&amp;__unset</h3>
+
+<p>在访问不可访问属性时将会触发此类函数,原本的操作反而不会执行。此类函数可以用来实现类的getter与setter，但是对于PHP这种效率为王的语言，开发者们多半不会考虑此类繁琐的事情。
+实现代码如下：</p>
+
+<pre><code>&lt;?php
+	class Magic{
+		
+		protected $pro1;
+		protected $pro2;
+
+		function __get($pro){
+			echo &quot;__get is running and is getting {$pro}\n&quot;;
+			return $this-&gt;$pro;
+		}
+
+		function __set($pro,$value)
+		{
+			echo &quot;__set is running and is seting {$pro} as {$value}\n&quot;;
+			$this-&gt;$pro = $value;
+		}
+
+		function __isset($pro)
+		{
+			return isset($this-&gt;$pro);
+			echo &quot;__isset is running and is checking {$pro}.\n&quot;;
+		}
+
+		function __unset($pro)
+		{
+			unset($this-&gt;$pro);
+			echo &quot;__unset is running and is checking {$pro}.\n&quot;;
+		}
+	}
+
+	$magic = new Magic();
+
+	$magic-&gt;pro2 = '2'; //赋值没有执行
+	echo $magic-&gt;pro2.&quot;\n&quot;;  //同样echo没有运行
+
+	$re = isset($magic-&gt;pro2);
+	var_dump($re);
+
+	unset($magic-&gt;pro2);
+		
+	
+</code></pre>
+
+<p>输出:</p>
+
+<pre><code>__set is running and is seting pro2 as 2
+__get is running and is getting pro2
+2
+
+bool(true)
+
+__unset is running and is checking pro2.
+
+</code></pre>
+
+<h3 id="call-callstatic">__call&amp;__callstatic</h3>
+
+<p>在对象中调用一个不可访问方法时，__call()会被调用。
+静态调用一个不可访问方法时，__callStatic()会被调用。
+这两个函数均有两个参数：string $name &ndash; 函数名，array $args &ndash; 调用参数数组。</p>
+
+<pre><code>&lt;?php
+	class Magic{
+		
+		protected $pro1;
+		protected $pro2;
+
+		protected function func1()
+		{
+			var_dump($this-&gt;pro1);
+		}
+
+		public static function func2(){
+			echo &quot;func2 is running.\n&quot;;
+		}
+
+		function __call($foo1,$arg){
+			echo &quot;program is calling {$foo1} with &quot;.json_encode($arg).&quot;\n&quot;;	
+		}
+
+		public static function __callStatic($foo1,$arg){
+			echo 'program is staticly calling  {$foo1} with '.json_encode($arg).&quot;\n&quot;;
+		}
+	}
+
+	$magic = new Magic();
+	$magic-&gt;fun1(1,1);
+	Magic::func2(2,2);
+	Magic::func3(3,3);
+</code></pre>
+
+<p>输出：</p>
+
+<pre><code>program is calling fun1 with [1,1]
+func2 is running.
+program is staticly calling  {$foo1} with [3,3]
+</code></pre>
+
+<p>在许多面向对象的语言当中，均有重载的概念，重载(overload)即函数/方法有相同的名称，但是参数列表不同，这些函数互相称为重载函数/方法，在调用时根据参数不同来区别不同的函数。</p>
+
+<p>例如在Java中，类中可以创建多个方法，它们具有相同的名字，但具有不同的参数和定义。</p>
+
+<p>在官方文档中给出的用法是上述两个函数可以用作函数的重载，但是用于重载反而没有充分利用到该函数的特性。</p>
+
+<p>在开源项目<a href="https://github.com/overtrue/wechat">EasyWecaht</a>中有这样一段代码：</p>
+
+<pre><code>class Factory
+{
+    /**
+     * @param string $name
+     * @param array  $config
+     *
+     * @return \EasyWeChat\Kernel\ServiceContainer
+     */
+    public static function make($name, array $config)
+    {
+        $namespace = Kernel\Support\Str::studly($name);
+        $application = &quot;\\EasyWeChat\\{$namespace}\\Application&quot;;
+        return new $application($config);
+    }
+    /**
+     * Dynamically pass methods to the application.
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        return self::make($name, ...$arguments);
+    }
+}
+</code></pre>
+
+<p>其使用方法是$app = Factory::$objName，利用这个函数可以做一个框架入口，具有很好的封装效果。
+<img src="https://upload-images.jianshu.io/upload_images/1594723-dc2fe601bf8c6c79.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/2100" alt="Factory.png" /></p>
+
+<h3 id="autoload">__autoload()</h3>
+
+<h3 id="其余函数">其余函数</h3>
+
+<p>剩下的函数不是本文叙述的重点，故放入表格简单概括。</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">function</th>
+<th align="center">trigger</th>
+<th align="center">feature</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="center">__clone()</td>
+<td align="center">$obj2 = clone $obj1;</td>
+<td align="center">浅复制</td>
+</tr>
+
+<tr>
+<td align="center">__invoke()</td>
+<td align="center">以使用函数的方法使用对象</td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center">__toString()</td>
+<td align="center">在如echo printf等输出类函数中或者其他需要字符串的情况下，对象作为参数时，会调用对象内的本函数</td>
+<td align="center">-</td>
+</tr>
+
+<tr>
+<td align="center">__wakeup()</td>
+<td align="center">unserialize()</td>
+<td align="center">工作前的准备</td>
+</tr>
+
+<tr>
+<td align="center">__sleep()</td>
+<td align="center">serialize()</td>
+<td align="center">同上</td>
+</tr>
+
+<tr>
+<td align="center">__set_state()</td>
+<td align="center">ver_export()</td>
+<td align="center">debug</td>
+</tr>
+
+<tr>
+<td align="center">__debugInfo()</td>
+<td align="center">var_dump()</td>
+<td align="center">debug</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="魔术方法底层实现原理">魔术方法底层实现原理</h2>
+
+<h3 id="reference">REFERENCE:</h3>
+
+<p><a href="http://php.net/manual/en/language.oop5.magic.php">PHP manual &ndash; Magic Methods</a></p>
+
+<p><a href="https://www.culttt.com/2014/04/16/php-magic-methods/">Cultt &ndash; What are PHP Magic Methods</a></p>
+
+<p><a href="http://www.php-internals.com/book/?p=chapt05/05-05-class-magic-methods-latebinding">第五节 魔术方法，延迟绑定及静态成员</a></p>
+
+      
+      
+      
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'bonjour-yang';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+  </main>
+  
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="http://j.noloss.cn/post/code_standard/" rel="prev">代码规范</a></span>
+    
+    
+      <span class="next"><a href="http://j.noloss.cn/post/points_in_go/" rel="next">go部分重点记录</a> &rarr;</span>
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-121684556-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
