@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    SVM - 支持向量机 | Bonjour.Yang
+    LCA&amp;PDA | Bonjour.Yang
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="http://j.noloss.cn/post/svm/"/>
+  <link rel="canonical" href="http://j.noloss.cn/post/lca_and_pda/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -60,7 +60,7 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>SVM - 支持向量机</h1>
+      <h1>LCA&amp;PDA</h1>
       <div class="meta">
         Dec 28, 2018 &nbsp;
         
@@ -68,40 +68,6 @@
     </div>
     <article>
       
-
-<ul>
-<li>通用逼近器。</li>
-<li>通用的前反馈网络。</li>
-<li>用于模式分类和非线性回归。</li>
-<li>线性机器。</li>
-<li>主要思想：建立一个超平面作为决策曲面，使得正例和反例之间的隔离边缘被最大化。</li>
-<li>结构风险最小化方法的近似实现。</li>
-<li>构造关键：在“支持向量”和输入空间抽取的向量x之间的内积核。</li>
-</ul>
-
-<p>构建三种类型：
-- 多项式学习机器
-- 径向基函数网络
-- 两层感知器</p>
-
-<h2 id="线性可分模型的最优超平面">线性可分模型的最优超平面</h2>
-
-<p>假定输入模式线性可分，用于分离的超平面的决策曲面方程是：
-wx+b=0
-从该平面到最近的数据点之间的距离间隔被称为<strong>分离边缘</strong>，用ρ表示。svm的<strong>目标</strong>是找到一个特殊的超平面，使得<strong>分离边缘ρ</strong>最大。在此条件下，决策曲面被称为最优超平面。</p>
-
-<p><img src="/tmp/1546411078596.png" alt="1546411078596" /></p>
-
-<p><strong>支持向量指的是那些靠近决策面的数据点。</strong>满足第一行或第二行情况的特殊数据点（xi,di)称为<strong>支持向量</strong>。这些向量在学习机器中起着主导作用。</p>
-
-<p><img src="/tmp/1546411315269.png" alt="1546411315269" /></p>
-
-<p>让ρ表示在两个类之间的<strong>分离边缘</strong>的最优值，其中这两个类构成训练集合</p>
-
-<p><img src="/tmp/1546411345230.png" alt="1546411345230" /></p>
-
-<h4 id="用于寻找最优超平面的二次最优化">用于寻找最优超平面的二次最优化</h4>
-
       
       
       
@@ -128,10 +94,10 @@ wx+b=0
   
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="http://j.noloss.cn/post/rbfn/" rel="prev">RBFN - 径向基函数网络</a></span>
+      <span class="previous">&larr; <a href="http://j.noloss.cn/post/svm/" rel="prev">SVM - 支持向量机</a></span>
     
     
-      <span class="next"><a href="http://j.noloss.cn/post/lca_and_pda/" rel="next">LCA&amp;PDA</a> &rarr;</span>
+      <span class="next"><a href="http://j.noloss.cn/post/som/" rel="next">SOM - 自组织映射</a> &rarr;</span>
     
   </nav>
 
