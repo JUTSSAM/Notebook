@@ -1,15 +1,7 @@
-# S: Build Lifecycle
-install:
-  - git clone git@github.com:JUTSSAM/jutssam.github.io.git
-after_script:
-  - cd jutssam.github.io/public
-  - git init
-  - git config user.name "jutssam"
-  - git config user.email "ybj948244086@126.com"
-  - git add .
-  - git commit -m "Update docs"
-  - git push -f "https://{REF}" master:gh-pages
-env:
-  global:
-  - REF=github.com/JUTSSAM/jutssam.github.io
-# E: Build LifeCycle
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: 27e2ffaa9d71fbb944f11a06e94c1b7dffb815fd
+  keep-history: true
+  on:
+    branch: master
