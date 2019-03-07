@@ -1,6 +1,6 @@
 # S: Build Lifecycle
 install:
-  - git pull git@github.com:JUTSSAM/jutssam.github.io.git
+  - git clone git@github.com:JUTSSAM/jutssam.github.io.git
 after_script:
   - cd jutssam.github.io/public
   - git init
