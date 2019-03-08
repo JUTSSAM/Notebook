@@ -10,8 +10,8 @@ after_script:
 - git config useremail "ybj948244086@126.com"
 - git add .
 - git commit -m "update"
-- git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
+- git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages
 env:
   global:
-  - GH_REF: github.com/JUTSSAM/jutssam.github.io.git
+  - GH_REF: github.com/JUTSSAM/index.git
   - secure: RWt1qFzlXqyanX+/MPFvMDbNkRIof6f5ZQudpQW6IqkZfexgJdqaU/qrUQcl3VKQQ884vMPwS3PX3BsuNxUXZjARpOmytdVlwVL2z5hFagVTcrbRmZVTqwclcYvRWNTNl6tPInnGXvEI+ov/sKfzYkr0K9CgGGL1iS+c2GPv4/4x6gCmWQMKMp07ELwy//wwbjr6YaHgAbM7oFru4QucfCzwGC/s4n3UPJKuA9ebGDbuxHr7o2InLhO4MEGCXdKxjiteaoJQJX/k9MZs5GdPA2hkq4Rb7dyjLmYtiZaPIiSOSgU+WLMaqVSViCwkAZMvmCOP7nf368gIxe0NwJCHU/lONnr2bjQTxJYiHqUyIUxNxv+pq0/T0w8nlUltTDjJagerfGu4AyXcXqjoZVEE2ReZ/NdY6fyZahuqGKqIEEO7KZCt/Ozu13RSveZlRNaIWfOdrG3hZKU2gVZ/3YyArEqarQeH/eu4IbrF+f+k5xJR5WFaPcrW1tWAA3GnEWGuEl6aPQ/LsE1bQM3Pyz/87xyW3FY06+jZJyYaL5Yis6lI9sHDyasBeg9EyrPa1JZPp//M+gdbrl+RPleFBco/DhBtH6pbngARC3OXaMM4FvKfLB0JXmRo5VMKtTto9ofE5n4s5r8mGXdFELDFQtxaAaRik7TMgoYvMnefli+Hnsw=
