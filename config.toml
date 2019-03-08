@@ -1,4 +1,4 @@
-baseURL = "http://j.noloss.cn/"
+baseURL = "https://jutssam.github.io/index/"
 publishDir = "docs"
 languageCode = "zh-cn"
 title = "Bonjour.Yang"

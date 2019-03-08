@@ -2,7 +2,7 @@ os: osx
 install:
 - brew install hugo
 script:
-- hugo
+- hugo --baseUrl="https://jutssam.github.io/index/"
 after_script:
 - cd public
 - git init
