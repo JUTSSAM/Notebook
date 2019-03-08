@@ -1,4 +1,6 @@
-dist:trusty
+language: ruby
+rvm:
+  - 2.0.0
 deploy:
   provider: pages
   skip-cleanup: true
