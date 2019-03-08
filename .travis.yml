@@ -1,10 +1,21 @@
-language: ruby
-rvm:
-  - 2.0.0
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $TOKEN
-  keep-history: true
-  on:
-    branch: master
+os: osx
+
+install: 
+  - brew install hugo
+
+script: 
+  - hugo
+
+after_script:
+  - cd docs
+  - git init
+  - git config user.name "bjyang"
+  - git config useremail "ybj948244086@126.com"
+  - git add .
+  - git commit -m "update"
+  - git push --force --quiet "https://${TOKEN}@${GH_REF}" master:gh-pages
+
+env:
+  global:
+    - GH_REF: github.com/JUTSSAM/jutssam.github.io.git
+    - secure: "cutYYmLtLprVmACpiT2Uyo/xcoVmkhR/LUECKi02b3EMZ2OQ2dzBwA5ll6ehG0OXyuXakGNOdxwYySYSu6BFBqU7nC7zlugknXGMVL404Suk7ktxcf+nYNpyyx8lY4R2gaGlba7Od/PE5Z8Wkgg4mqM/hqlfa6ljJs2koxNWC5xO/fY7eY3iHW72uAJg/ZhG9rQ6S21yVpFfSAUrVgmyajHDiGsnOz2OsMGEvIdZLPlbriMO8SbjcSFOcHdIOhjB7XX13U2JXSVzjxvc01cUQ0L/JJl032cw15DIOq/iE9ren2drV26dZg971S6Bw/i8Wk+BvTi1JY/fp4SB9GMZ6FaNYMXVDCeAqExf17PUD3E6H8OaSbkt3ucpd2RZEA8Qil1efwES92VePYiqXvvufFCyRUzrncxZDKYtYgzcSXu4AQDoPUj0xdYK+mHn6c6A3McdXQyglZctpRdKa78p0goRuYK4ulB9l6FJYIOnF9UB7/Ro7KLHGWLhmkmAp5LzJAGxfXJ4+svY9V2OOwbwjQIZYuQmRVR8vStOAyC02EBFm75ub3THi/bEzagiZ1cafqU5o3YqfuSokMtI6sGr1BG1aSRQaOr5Z5nrNpBkKRk0Jm7uwbb/NSBC6ZOMti7Wr+j3w7TjmYnkGJtH0didZJ1hAbmbmq3ObWuyhycaTGs="
